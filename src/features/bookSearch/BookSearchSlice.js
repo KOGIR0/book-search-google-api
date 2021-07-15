@@ -1,7 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  books: []
+  books: [],
+  resultsCount: 0,
+  status: "idle",
+  inputValue: '',
+  subject: '',
+  order: 'relevance',
+  startIndex: 0,
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -11,31 +17,46 @@ const initialState = {
 // typically used to make async requests.
 export const fetchBooks = createAsyncThunk(
   'bookSearch/fetchBooks',
-  async (url) => {
+  async (searchParams) => {
+    let url = "https://www.googleapis.com/books/v1/volumes?q=" + searchParams.query + 
+            "+subject:" + searchParams.subject + "&orderBy=" + searchParams.order + 
+            "&maxResults=30&startIndex=0&key=AIzaSyD4FoBuK8DU7An_yYeCpI4tYOxOXlxSfb4";
     const response = fetch(url).then((res) => res.json());
     // The value we return becomes the `fulfilled` action payload
     return response;
   }
 );
 
+export const fetchMoreBooks = createAsyncThunk(
+  'bookSearch/fetchMoreBooks',
+  async (searchParams) => {
+    let url = "https://www.googleapis.com/books/v1/volumes?q=" + searchParams.query + 
+        "+subject:" + searchParams.subject + "&orderBy=" + searchParams.order + 
+        "&maxResults=30&startIndex=" + searchParams.startIndex + 
+        "&key=AIzaSyD4FoBuK8DU7An_yYeCpI4tYOxOXlxSfb4";
+    const response = fetch(url).then((res) => res.json());
+    // The value we return becomes the `fulfilled` action payload
+    return response;
+  }
+)
+
 export const bookSearchSlice = createSlice({
   name: 'bookSearch',
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
-    increment: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.value += 1;
+    setStartIndex: (state, action) => {
+      state.startIndex = action.payload;
     },
-    decrement: (state) => {
-      state.value -= 1;
+    setOrder: (state, action) => {
+      state.order = action.payload;
+    },
+    setSubject: (state, action) => {
+      state.subject = action.payload;
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
-    incrementByAmount: (state, action) => {
-      state.value = action.payload;
+    setInputValue: (state, action) => {
+      state.inputValue = action.payload;
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -47,16 +68,45 @@ export const bookSearchSlice = createSlice({
       })
       .addCase(fetchBooks.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.books = action.payload.items;
+        state.books = action.payload.items.map(item => {
+          return {
+            imageLinks: item.volumeInfo.imageLinks,
+            title: item.volumeInfo.title,
+            categories: item.volumeInfo.categories,
+            authors: item.volumeInfo.authors,
+            description: item.volumeInfo.description
+          }
+        });
+        state.startIndex = state.books.length;
+        state.resultsCount = action.payload.totalItems;
+      })
+      .addCase(fetchMoreBooks.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.books = [...state.books, ...action.payload.items.map(item => {
+          return {
+            imageLinks: item.volumeInfo.imageLinks,
+            title: item.volumeInfo.title,
+            categories: item.volumeInfo.categories,
+            authors: item.volumeInfo.authors,
+            description: item.volumeInfo.description
+          }
+        })];
+        state.startIndex = state.books.length;
+        state.resultsCount = action.payload.totalItems;
       });
   },
 });
 
-export const { } = bookSearchSlice.actions;
+export const { setInputValue, setSubject, setOrder, setStartIndex } = bookSearchSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectBooks = (state) => state.bookSearch.books;
+export const selectResultsCount = (state) => state.bookSearch.resultsCount;
+export const selectInputValue = (state) => state.bookSearch.inputValue;
+export const selectSubject = (state) => state.bookSearch.subject;
+export const selectOrder = (state) => state.bookSearch.order;
+export const selectStartIndex = (state) => state.bookSearch.startIndex;
 
 export default bookSearchSlice.reducer;

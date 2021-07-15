@@ -1,0 +1,35 @@
+#books-area
+{
+    display: grid;  
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.book
+{
+    background-color: lightgrey;
+    padding: 10px;
+    margin: 10px;
+}
+
+.book .book-title, .book-categories, .book-authors
+{
+    text-align: left;
+}
+
+.book-authors, .book-categories
+{
+    color: grey;
+}
+
+.book-categories
+{
+    width: 20%;
+    border-bottom: 1px solid grey;
+}
+
+.load-more
+{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
