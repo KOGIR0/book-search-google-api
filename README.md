@@ -4,6 +4,11 @@ Project uses [google book api](https://developers.google.com/books)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
+## Images
+
+![](https://github.com/KOGIR0/book-search-google-api/blob/main/images/book-search-google-api-1.png)
+![](https://github.com/KOGIR0/book-search-google-api/blob/main/images/book-search-google-api-2.png)
+
 ## Available Scripts
 
 In the project directory, you can run:
