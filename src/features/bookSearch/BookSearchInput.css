@@ -1,0 +1,51 @@
+#book-search-input
+{
+    background-color: grey;
+    color: white;
+    padding: 5px;
+}
+
+#book-search-input input
+{
+    font-size: 18px;
+    margin: 10px 0 10px 10px;
+    width: 40%;
+}
+
+#book-search-input button
+{
+    border: none;
+    margin: 0;
+    font-size: 18px;
+}
+
+#search-options option, select
+{
+    border: none;
+    width: 150px;
+    font-size: 18px;
+}
+
+#search-options label
+{
+    margin: 5px;
+}
+
+#search-options
+{
+    padding-bottom: 10px;
+}
+
+@media (max-width: 500px)
+{
+    #search-options
+    {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #search-options span
+    {
+        padding-top: 10px;
+    }
+}
