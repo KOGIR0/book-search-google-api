@@ -1,6 +1,7 @@
 # Book Search React App
 
 Project uses [google book api](https://developers.google.com/books)
+To run app add .env file with REACT_APP_API_KEY variable with your book search google api key
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 

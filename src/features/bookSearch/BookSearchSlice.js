@@ -16,7 +16,7 @@ export const fetchBooks = createAsyncThunk(
   async (searchParams) => {
     let url = "https://www.googleapis.com/books/v1/volumes?q=" + searchParams.query + 
             "+subject:" + searchParams.subject + "&orderBy=" + searchParams.order + 
-            "&maxResults=30&startIndex=0&key=AIzaSyD4FoBuK8DU7An_yYeCpI4tYOxOXlxSfb4";
+            "&maxResults=30&startIndex=0&key=" + process.env.REACT_APP_API_KEY;
     const response = fetch(url).then((res) => res.json());
     
     return response;
@@ -29,7 +29,7 @@ export const fetchMoreBooks = createAsyncThunk(
     let url = "https://www.googleapis.com/books/v1/volumes?q=" + searchParams.query + 
         "+subject:" + searchParams.subject + "&orderBy=" + searchParams.order + 
         "&maxResults=30&startIndex=" + searchParams.startIndex + 
-        "&key=AIzaSyD4FoBuK8DU7An_yYeCpI4tYOxOXlxSfb4";
+        "&key=" + process.env.REACT_APP_API_KEY;
     const response = fetch(url).then((res) => res.json());
     
     return response;

@@ -50,7 +50,7 @@ export function BookSearch() {
                                         <Book book={book}/>
                                     </div>)) }
                                 </div>
-                                { (books.length > 0 && books.length != resultsCount) ? 
+                                { (books.length > 0 && books.length !== resultsCount) ? 
                                 <button className="load-more" onClick={() => {
                                     dispatch(fetchMoreBooks(searchParams));
                                     dispatch(setStartIndex(startIndex + books.length))
