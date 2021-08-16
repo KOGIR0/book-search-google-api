@@ -21,7 +21,7 @@ function BooksList(props)
 {
     return <div id="books-area">
                 { props.books.map((book, index) => (
-                <div className="book" key={index} onClick={() => props.onBookClick(index)}>
+                <div data-testid="book" className="book" key={index} onClick={() => props.onBookClick(index)}>
                     <Book book={book}/>
                 </div>)) }
             </div>
@@ -43,7 +43,7 @@ function FoundBooks()
         <div>Found <span data-testid="results-num">{resultsCount}</span> results</div>
         <BooksList books={books} onBookClick={(index) => dispatch(setChosenBook(index))} />
         { (books.length > 0 && books.length !== resultsCount) ?
-            <button className="load-more" onClick={() => {
+            <button data-testid="load-more-btn" className="load-more" onClick={() => {
                 dispatch(fetchMoreBooks(searchParams));
                 dispatch(setStartIndex(searchParams.startIndex + books.length))
             }}>Load more</button> : null }
